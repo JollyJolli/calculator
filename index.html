@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #301934;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .calculator {
+        background-color: #4b2b4d;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .button {
+        background-color: #6a3f6a;
+        color: #ffffff;
+        border: none;
+        padding: 15px 20px;
+        font-size: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+        transition: transform 0.2s ease-in-out;
+    }
+    .button:hover {
+        transform: translateY(-5px);
+    }
+    .button:active {
+        transform: translateY(2px);
+    }
+    .result {
+        background-color: #3d1d3d;
+        color: #ffffff;
+        font-size: 24px;
+        text-align: right;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="result" id="result">0</div>
+    <div>
+        <button class="button" onclick="appendToResult('7')">7</button>
+        <button class="button" onclick="appendToResult('8')">8</button>
+        <button class="button" onclick="appendToResult('9')">9</button>
+        <button class="button" onclick="appendToResult('+')">+</button>
+        <button class="button" onclick="appendToResult('(')">(</button>
+        <button class="button" onclick="appendToResult(')')">)</button>
+        <button class="button" onclick="backspace()">←</button>
+    </div>
+    <div>
+        <button class="button" onclick="appendToResult('4')">4</button>
+        <button class="button" onclick="appendToResult('5')">5</button>
+        <button class="button" onclick="appendToResult('6')">6</button>
+        <button class="button" onclick="appendToResult('-')">-</button>
+        <button class="button" onclick="appendToResult('Math.sqrt(')">√</button>
+        <button class="button" onclick="appendToResult('**')">^</button>
+        <button class="button" onclick="clearResult()">C</button>
+    </div>
+    <div>
+        <button class="button" onclick="appendToResult('1')">1</button>
+        <button class="button" onclick="appendToResult('2')">2</button>
+        <button class="button" onclick="appendToResult('3')">3</button>
+        <button class="button" onclick="appendToResult('*')">*</button>
+        <button class="button" onclick="appendToResult('Math.PI')">π</button>
+        <button class="button" onclick="appendToResult('Math.sin(')">sin</button>
+        <button class="button" onclick="appendToResult('Math.cos(')">cos</button>
+    </div>
+    <div>
+        <button class="button" onclick="appendToResult('0')">0</button>
+        <button class="button" onclick="appendToResult('.')">.</button>
+        <button class="button" onclick="calculate()">=</button>
+        <button class="button" onclick="appendToResult('/')">/</button>
+        <button class="button" onclick="appendToResult('Math.log10(')">log</button>
+        <button class="button" onclick="appendToResult('Math.exp(')">exp</button>
+        <button class="button" onclick="appendToResult('Math.tan(')">tan</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('keydown', function(event) {
+        const key = event.key;
+        if (/[0-9/*\-+().]/.test(key)) {
+            appendToResult(key);
+        } else if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Escape') {
+            clearResult();
+        } else if (key === 'Backspace') {
+            backspace();
+        }
+    });
+
+    function appendToResult(value) {
+        document.getElementById('result').innerText += value;
+    }
+
+    function clearResult() {
+        document.getElementById('result').innerText = '';
+    }
+
+    function backspace() {
+        var result = document.getElementById('result').innerText;
+        document.getElementById('result').innerText = result.slice(0, -1);
+    }
+
+    function calculate() {
+        try {
+            var result = eval(document.getElementById('result').innerText);
+            if (isNaN(result) || !isFinite(result)) {
+                throw "Invalid expression";
+            }
+            document.getElementById('result').innerText = result;
+            animateResult();
+        } catch (error) {
+            document.getElementById('result').innerText = 'Error';
+        }
+    }
+
+    function animateResult() {
+        var resultElement = document.getElementById('result');
+        resultElement.style.animation = 'shake 0.5s ease';
+        setTimeout(function () {
+            resultElement.style.animation = '';
+        }, 500);
+    }
+</script>
+
+</body>
+</html>
